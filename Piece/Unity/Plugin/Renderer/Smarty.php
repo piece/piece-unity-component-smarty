@@ -201,8 +201,16 @@ class Piece_Unity_Plugin_Renderer_Smarty extends Piece_Unity_Plugin_Renderer_HTM
         if (!$isLayout) {
             $view = $this->_context->getView();
         } else {
-            $smarty->template_dir = $this->_getConfiguration('layoutDirectory');
-            $smarty->compile_dir = $this->_getConfiguration('layoutCompileDirectory');
+            $layoutDirectory = $this->_getConfiguration('layoutDirectory');
+            if (!is_null($layoutDirectory)) {
+                $smarty->template_dir = $layoutDirectory;
+            }
+
+            $layoutCompileDirectory = $this->_getConfiguration('layoutCompileDirectory');
+            if (!is_null($layoutCompileDirectory)) {
+                $smarty->compile_dir = $layoutCompileDirectory;
+            }
+
             $view = $this->_getConfiguration('layoutView');
         }
 
@@ -250,8 +258,16 @@ class Piece_Unity_Plugin_Renderer_Smarty extends Piece_Unity_Plugin_Renderer_HTM
     function _prepareFallback()
     {
         $config = &$this->_context->getConfiguration();
-        $config->setConfiguration('Renderer_Smarty', 'template_dir', $this->_getConfiguration('fallbackDirectory'));
-        $config->setConfiguration('Renderer_Smarty', 'compile_dir', $this->_getConfiguration('fallbackCompileDirectory'));
+
+        $fallbackDirectory = $this->_getConfiguration('fallbackDirectory');
+        if (!is_null($fallbackDirectory)) {
+            $config->setConfiguration('Renderer_Smarty', 'template_dir', $fallbackDirectory);
+        }
+
+        $fallbackCompileDirectory = $this->_getConfiguration('fallbackCompileDirectory');
+        if (!is_null($fallbackCompileDirectory)) {
+            $config->setConfiguration('Renderer_Smarty', 'compile_dir', $fallbackCompileDirectory);
+        }
     }
 
     /**#@-*/
