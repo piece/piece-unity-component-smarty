@@ -111,6 +111,9 @@ class Piece_Unity_Plugin_Renderer_SmartyTestCase extends Piece_Unity_Plugin_Rend
     function _doSetUp()
     {
         $this->_cacheDirectory = dirname(__FILE__) . '/' . basename(__FILE__, '.php');
+        mkdir("{$this->_cacheDirectory}/compiled-templates/Content");
+        mkdir("{$this->_cacheDirectory}/compiled-templates/Layout");
+        mkdir("{$this->_cacheDirectory}/compiled-templates/Fallback");
     }
 
     /**
