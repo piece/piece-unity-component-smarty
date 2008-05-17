@@ -4,7 +4,7 @@
 /**
  * PHP versions 4 and 5
  *
- * Copyright (c) 2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>,
  *               2007 Chihiro Sakatoku <csakatoku@users.sourceforge.net>,
  * All rights reserved.
  *
@@ -31,7 +31,7 @@
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Smarty
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2007 Chihiro Sakatoku <csakatoku@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
@@ -39,18 +39,18 @@
  * @since      File available since Release 1.0.0
  */
 
-require_once 'Piece/Unity/Plugin/Common.php';
 require_once 'Piece/Unity/Plugin/Renderer/HTML.php';
 require_once 'Piece/Unity/Error.php';
+require_once 'Piece/Unity/Service/Rendering/Smarty.php';
 
 // {{{ Piece_Unity_Plugin_Renderer_Smarty
 
 /**
- * A renderer which is based on Smarty template engine.
+ * A renderer based on Smarty.
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Smarty
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2007 Chihiro Sakatoku <csakatoku@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
@@ -92,70 +92,6 @@ class Piece_Unity_Plugin_Renderer_Smarty extends Piece_Unity_Plugin_Renderer_HTM
      */
 
     // }}}
-    // {{{ _adjustEndingSlash()
-
-    /**
-     * Added an ending slash to the directory if it is required.
-     *
-     * @param string $directory
-     * @return string
-     */
-    function _adjustEndingSlash($directory)
-    {
-        if (substr($directory, -1, 1) != '/' && substr($directory, -1, 1) != '\\') {
-            $directory .= '/';
-        }
-
-        return $directory;
-    }
-
-    // }}}
-    // {{{ _load()
-
-    /**
-     * Loads a Smarty class.
-     *
-     * @throws PIECE_UNITY_ERROR_NOT_FOUND
-     */
-    function _load()
-    {
-        if (!defined('SMARTY_DIR')) {
-            $SMARTY_DIR = $this->_getConfiguration('SMARTY_DIR');
-            if (!is_null($SMARTY_DIR)) {
-                define('SMARTY_DIR', Piece_Unity_Plugin_Renderer_Smarty::_adjustEndingSlash($SMARTY_DIR));
-            }
-        }
-
-        if (defined('SMARTY_DIR')) {
-            $included = @include_once SMARTY_DIR . 'Smarty.class.php';
-        } else {
-            $included = @include_once 'Smarty.class.php';
-            if (!$included) {
-                $included = @include_once 'Smarty/Smarty.class.php';
-            }
-        }
-
-        if (!$included) {
-            Piece_Unity_Error::push(PIECE_UNITY_ERROR_NOT_FOUND,
-                                    'The Smarty class file [ Smarty.class.php ] not found or is not readable.'
-                                    );
-            return;
-        }
-
-        if (version_compare(phpversion(), '5.0.0', '<')) {
-            $loaded = class_exists('Smarty');
-        } else {
-            $loaded = class_exists('Smarty', false);
-        }
-
-        if (!$loaded) {
-            Piece_Unity_Error::push(PIECE_UNITY_ERROR_NOT_FOUND,
-                                    'The class [ Smarty ] does not defined in the class file [ Smarty.class.php ].'
-                                    );
-        }
-    }
-
-    // }}}
     // {{{ _initialize()
 
     /**
@@ -171,8 +107,6 @@ class Piece_Unity_Plugin_Renderer_Smarty extends Piece_Unity_Plugin_Renderer_HTM
         foreach ($this->_smartyClassVariables as $point => $default) {
             $this->_addConfigurationPoint($point, $default);
         }
-
-        $this->_load();
     }
 
     // }}}
@@ -186,19 +120,18 @@ class Piece_Unity_Plugin_Renderer_Smarty extends Piece_Unity_Plugin_Renderer_HTM
      */
     function _doRender($isLayout)
     {
-        $smarty = &new Smarty();
-
-        foreach (array_keys($this->_smartyClassVariables) as $point) {
-            $$point = $this->_getConfiguration($point);
-            if ($point == 'plugins_dir' && is_array($$point)) {
-                $oldPluginDirectories = $smarty->$point;
-                $smarty->$point = array_merge($$point, $oldPluginDirectories);
-                continue;
+        if (!defined('SMARTY_DIR')) {
+            $SMARTY_DIR = $this->_getConfiguration('SMARTY_DIR');
+            if (!is_null($SMARTY_DIR)) {
+                define('SMARTY_DIR',
+                       Piece_Unity_Service_Rendering_Smarty::_adjustEndingSlash($SMARTY_DIR)
+                       );
             }
+        }
 
-            if (!is_null($$point)) {
-                $smarty->$point = $this->_adjustEndingSlash($$point);
-            }
+        foreach (array_keys($this->_smartyClassVariables) as $smartyClassVariable) {
+            $this->_smartyClassVariables[$smartyClassVariable] =
+                $this->_getConfiguration($smartyClassVariable);
         }
 
         if (!$isLayout) {
@@ -206,49 +139,43 @@ class Piece_Unity_Plugin_Renderer_Smarty extends Piece_Unity_Plugin_Renderer_HTM
         } else {
             $layoutDirectory = $this->_getConfiguration('layoutDirectory');
             if (!is_null($layoutDirectory)) {
-                $smarty->template_dir = $layoutDirectory;
+                $this->_smartyClassVariables['template_dir'] = $layoutDirectory;
             }
 
-            $layoutCompileDirectory = $this->_getConfiguration('layoutCompileDirectory');
+            $layoutCompileDirectory =
+                $this->_getConfiguration('layoutCompileDirectory');
             if (!is_null($layoutCompileDirectory)) {
-                $smarty->compile_dir = $layoutCompileDirectory;
+                $this->_smartyClassVariables['compile_dir'] = $layoutCompileDirectory;
             }
 
             $view = $this->_getConfiguration('layoutView');
         }
 
+        $file = str_replace('_', '/', str_replace('.', '', $view)) .
+            $this->_getConfiguration('templateExtension');
         $viewElement = &$this->_context->getViewElement();
-        $viewElements = $viewElement->getElements();
-        foreach (array_keys($viewElements) as $elementName) {
-            $smarty->assign_by_ref($elementName, $viewElements[$elementName]);
-        }
 
-        set_error_handler(array('Piece_Unity_Error', 'pushPHPError'));
-        Piece_Unity_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
-        $file = str_replace('_', '/', str_replace('.', '', $view)) . $this->_getConfiguration('templateExtension');
-        $smarty->display($file);
-        Piece_Unity_Error::popCallback();
-        restore_error_handler();
-        if (Piece_Unity_Error::hasErrors()) {
+        $rendering =
+            &new Piece_Unity_Service_Rendering_Smarty($this->_smartyClassVariables);
+        $rendering->render($file, $viewElement);
+        if (Piece_Unity_Error::hasErrors('exception')) {
             $error = Piece_Unity_Error::pop();
-            if ($error['code'] == PIECE_UNITY_ERROR_PHP_ERROR
-                && array_key_exists('repackage', $error)
-                && preg_match('/^Smarty error: unable to read resource:/', $error['repackage']['message'])
-                ) {
+            if ($error['code'] == PIECE_UNITY_ERROR_NOT_FOUND) {
                 Piece_Unity_Error::push('PIECE_UNITY_PLUGIN_RENDERER_HTML_ERROR_NOT_FOUND',
-                                        "The HTML template file [ $file ] not found.",
+                                        $error['message'],
                                         'exception',
                                         array(),
                                         $error
                                         );
-            } else {
-                Piece_Unity_Error::push(PIECE_UNITY_ERROR_INVOCATION_FAILED,
-                                        "Failed to invoke the plugin [ {$this->_name} ].",
-                                        $error['level'],
-                                        array(),
-                                        $error
-                                        );
+                return;
             }
+
+            Piece_Unity_Error::push(PIECE_UNITY_ERROR_INVOCATION_FAILED,
+                                    "Failed to invoke the plugin [ {$this->_name} ].",
+                                    'exception',
+                                    array(),
+                                    $error
+                                    );
         }
     }
 
@@ -264,12 +191,19 @@ class Piece_Unity_Plugin_Renderer_Smarty extends Piece_Unity_Plugin_Renderer_HTM
 
         $fallbackDirectory = $this->_getConfiguration('fallbackDirectory');
         if (!is_null($fallbackDirectory)) {
-            $config->setConfiguration('Renderer_Smarty', 'template_dir', $fallbackDirectory);
+            $config->setConfiguration('Renderer_Smarty',
+                                      'template_dir',
+                                      $fallbackDirectory
+                                      );
         }
 
-        $fallbackCompileDirectory = $this->_getConfiguration('fallbackCompileDirectory');
+        $fallbackCompileDirectory =
+            $this->_getConfiguration('fallbackCompileDirectory');
         if (!is_null($fallbackCompileDirectory)) {
-            $config->setConfiguration('Renderer_Smarty', 'compile_dir', $fallbackCompileDirectory);
+            $config->setConfiguration('Renderer_Smarty',
+                                      'compile_dir',
+                                      $fallbackCompileDirectory
+                                      );
         }
     }
 
