@@ -4,7 +4,7 @@
 /**
  * PHP versions 4 and 5
  *
- * Copyright (c) 2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>,
  *               2007 Chihiro Sakatoku <csakatoku@users.sourceforge.net>,
  * All rights reserved.
  *
@@ -31,7 +31,7 @@
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Smarty
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2007 Chihiro Sakatoku <csakatoku@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
@@ -40,9 +40,9 @@
 
 require_once realpath(dirname(__FILE__) . '/../../../../prepare.php');
 require_once 'Piece/Unity/Plugin/Renderer/HTMLTest.php';
-require_once 'Piece/Unity/Plugin/Renderer/Smarty.php';
 require_once 'Piece/Unity/Config.php';
-require_once 'Piece/Unity/Error.php';
+require_once 'Piece/Unity/Context.php';
+require_once 'Piece/Unity/Plugin/Renderer/Smarty.php';
 
 // {{{ Piece_Unity_Plugin_Renderer_SmartyTestCase
 
@@ -51,7 +51,7 @@ require_once 'Piece/Unity/Error.php';
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Smarty
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2007 Chihiro Sakatoku <csakatoku@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
@@ -82,15 +82,14 @@ class Piece_Unity_Plugin_Renderer_SmartyTestCase extends Piece_Unity_Plugin_Rend
 
     function testLoadingPlugins()
     {
-        $viewString = "{$this->_target}LoadingPlugins";
         $context = &Piece_Unity_Context::singleton();
-        
+        $context->setView("{$this->_target}LoadingPlugins");
+        $viewElement = &$context->getViewElement();
+        $viewElement->setElement('content', 'This is a dynamic content.');
         $config = &$this->_getConfig();
         $context->setConfiguration($config);
-        $context->setView($viewString);
-        $buffer = $this->_render();
 
-        $this->assertEquals('Hello World', trim($buffer));
+        $this->assertEquals('Hello World', trim($this->_render()));
     }
 
     /**#@-*/
@@ -102,11 +101,9 @@ class Piece_Unity_Plugin_Renderer_SmartyTestCase extends Piece_Unity_Plugin_Rend
     function &_getConfig()
     {
         $config = &new Piece_Unity_Config();
-        $config->setConfiguration('Dispatcher_Simple', 'actionDirectory', "{$this->_cacheDirectory}/actions");
         $config->setConfiguration('Renderer_Smarty', 'template_dir', "{$this->_cacheDirectory}/templates/Content");
         $config->setConfiguration('Renderer_Smarty', 'compile_dir', "{$this->_cacheDirectory}/compiled-templates/Content");
         $config->setConfiguration('Renderer_Smarty', 'plugins_dir', array("{$this->_cacheDirectory}/plugins"));
-        $config->setExtension('View', 'renderer', 'Renderer_Smarty');
 
         return $config;
     }
@@ -125,11 +122,9 @@ class Piece_Unity_Plugin_Renderer_SmartyTestCase extends Piece_Unity_Plugin_Rend
     function &_getConfigForLayeredStructure()
     {
         $config = &new Piece_Unity_Config();
-        $config->setConfiguration('Dispatcher_Simple', 'actionDirectory', "{$this->_cacheDirectory}/actions");
         $config->setConfiguration('Renderer_Smarty', 'template_dir', "{$this->_cacheDirectory}/templates");
         $config->setConfiguration('Renderer_Smarty', 'compile_dir', "{$this->_cacheDirectory}/compiled-templates");
         $config->setConfiguration('Renderer_Smarty', 'plugins_dir', array("{$this->_cacheDirectory}/plugins"));
-        $config->setExtension('View', 'renderer', 'Renderer_Smarty');
 
         return $config;
     }
