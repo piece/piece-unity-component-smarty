@@ -39,7 +39,7 @@
  */
 
 require_once realpath(dirname(__FILE__) . '/../../../../prepare.php');
-require_once 'Piece/Unity/Plugin/Renderer/HTMLTest.php';
+require_once 'Piece/Unity/Plugin/Renderer/HTML/CompatibilityTests.php';
 require_once 'Piece/Unity/Config.php';
 require_once 'Piece/Unity/Context.php';
 require_once 'Piece/Unity/Plugin/Renderer/Smarty.php';
@@ -47,7 +47,7 @@ require_once 'Piece/Unity/Plugin/Renderer/Smarty.php';
 // {{{ Piece_Unity_Plugin_Renderer_SmartyTestCase
 
 /**
- * TestCase for Piece_Unity_Plugin_Renderer_Smarty
+ * Some tests for Piece_Unity_Plugin_Renderer_Smarty.
  *
  * @package    Piece_Unity
  * @subpackage Piece_Unity_Component_Smarty
@@ -57,7 +57,7 @@ require_once 'Piece/Unity/Plugin/Renderer/Smarty.php';
  * @version    Release: @package_version@
  * @since      Class available since Release 1.0.0
  */
-class Piece_Unity_Plugin_Renderer_SmartyTestCase extends Piece_Unity_Plugin_Renderer_HTMLTest
+class Piece_Unity_Plugin_Renderer_SmartyTestCase extends Piece_Unity_Plugin_Renderer_HTML_CompatibilityTests
 {
 
     // {{{ properties
