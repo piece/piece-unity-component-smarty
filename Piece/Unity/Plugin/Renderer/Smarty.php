@@ -224,4 +224,3 @@ class Piece_Unity_Plugin_Renderer_Smarty extends Piece_Unity_Plugin_Renderer_HTM
  * indent-tabs-mode: nil
  * End:
  */
-?>

@@ -100,4 +100,3 @@ class SmartyExampleAction
  * indent-tabs-mode: nil
  * End:
  */
-?>

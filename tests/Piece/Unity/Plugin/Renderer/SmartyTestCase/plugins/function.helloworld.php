@@ -52,5 +52,4 @@ function smarty_function_helloworld($params, &$smarty)
  * indent-tabs-mode: nil
  * End:
  */
-?>
 

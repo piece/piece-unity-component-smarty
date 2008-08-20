@@ -146,4 +146,3 @@ class Piece_Unity_Plugin_Renderer_SmartyTestCase extends Piece_Unity_Plugin_Rend
  * indent-tabs-mode: nil
  * End:
  */
-?>
