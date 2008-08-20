@@ -121,7 +121,7 @@ class Piece_Unity_Service_Rendering_Smarty extends Piece_Unity_Plugin_Renderer_H
             $smarty->assign_by_ref($elementName, $viewElements[$elementName]);
         }
 
-        set_error_handler(array('Piece_Unity_Error', 'pushPHPError'));
+        set_error_handler(array(__CLASS__, 'pushPHPError'));
         Piece_Unity_Error::disableCallback();
         $smarty->display($file);
         Piece_Unity_Error::enableCallback();
@@ -148,6 +148,50 @@ class Piece_Unity_Service_Rendering_Smarty extends Piece_Unity_Plugin_Renderer_H
                                         );
             }
         }
+    }
+
+    // }}}
+    // {{{ pushPHPError()
+
+    /**
+     * Adds a PHP error to the stack for the package.
+     *
+     * @param integer $code
+     * @param string  $message
+     * @param string  $file
+     * @param integer $line
+     * @throws PIECE_UNITY_ERROR_PHP_ERROR
+     */
+    function pushPHPError($code, $message, $file, $line)
+    {
+        switch ($code) {
+        case E_STRICT:
+        case E_WARNING:
+        case E_NOTICE:
+        case E_USER_NOTICE:
+            return;
+        case E_USER_WARNING:
+        case E_USER_ERROR:
+        default:
+            break;
+        }
+
+        $time = explode(' ', microtime());
+        $time = $time[1] + $time[0];
+        Piece_Unity_Error::push(PIECE_UNITY_ERROR_PHP_ERROR,
+                                'A PHP error raised.',
+                                'exception',
+                                array(),
+                                array('code' => $code,
+                                      'message' => $message,
+                                      'params' => array(),
+                                      'package' => 'PHP',
+                                      'level' => 'exception',
+                                      'time' => $time,
+                                      'context' => array('file' => $file,
+                                                         'line' => $line)),
+                                debug_backtrace()
+                                );
     }
 
     /**#@-*/
