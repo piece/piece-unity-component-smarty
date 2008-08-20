@@ -96,8 +96,6 @@ class Piece_Unity_Plugin_Renderer_Smarty extends Piece_Unity_Plugin_Renderer_HTM
 
     /**
      * Defines and initializes extension points and configuration points.
-     *
-     * @throws PIECE_UNITY_ERROR_NOT_FOUND
      */
     function _initialize()
     {
@@ -158,7 +156,7 @@ class Piece_Unity_Plugin_Renderer_Smarty extends Piece_Unity_Plugin_Renderer_HTM
         $rendering =
             &new Piece_Unity_Service_Rendering_Smarty($this->_smartyClassVariables);
         $rendering->render($file, $viewElement);
-        if (Piece_Unity_Error::hasErrors('exception')) {
+        if (Piece_Unity_Error::hasErrors()) {
             $error = Piece_Unity_Error::pop();
             if ($error['code'] == PIECE_UNITY_ERROR_NOT_FOUND) {
                 Piece_Unity_Error::push('PIECE_UNITY_PLUGIN_RENDERER_HTML_ERROR_NOT_FOUND',
