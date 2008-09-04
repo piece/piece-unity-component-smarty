@@ -41,15 +41,16 @@ require_once 'PEAR.php';
 
 PEAR::staticPushErrorHandling(PEAR_ERROR_CALLBACK, create_function('$error', 'var_dump($error); exit();'));
 
-$releaseVersion = '1.1.0';
+$releaseVersion = '1.2.0';
 $releaseStability = 'stable';
-$apiVersion = '1.0.0';
+$apiVersion = '1.2.0';
 $apiStability = 'stable';
 $notes = 'A new release of Piece_Unity_Component_Smarty is now available.
 
 What\'s New in Piece_Unity_Component_Smarty 1.2.0
 
- * Less configuration: When using layout/fallback, "template_dir" and "compile_dir" are always used if its configurations are not given.';
+ * Piece_Unity 1.5.0 support: Piece_Unity_Component_Smarty 1.2.0 does work properly with Piece_Unity 1.5.0.
+ * Piece_Unity_Service_Rendering_Smarty: Piece_Unity_Service_Rendering_Smarty allows you to use Smarty in actions and plug-ins.';
 
 $package = new PEAR_PackageFileManager2();
 $package->setOptions(array('filelistgenerator' => 'file',

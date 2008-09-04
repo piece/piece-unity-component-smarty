@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.6.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.7.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
@@ -13,11 +13,11 @@
   <email>iteman@users.sourceforge.net</email>
   <active>yes</active>
  </lead>
- <date>2007-11-17</date>
- <time>18:25:36</time>
+ <date>2008-09-04</date>
+ <time>11:08:06</time>
  <version>
-  <release>1.1.0</release>
-  <api>1.0.0</api>
+  <release>1.2.0</release>
+  <api>1.2.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -28,7 +28,8 @@
 
 What&apos;s New in Piece_Unity_Component_Smarty 1.2.0
 
- * Less configuration: When using layout/fallback, &quot;template_dir&quot; and &quot;compile_dir&quot; are always used if its configurations are not given.</notes>
+ * Piece_Unity 1.5.0 support: Piece_Unity_Component_Smarty 1.2.0 does work properly with Piece_Unity 1.5.0.
+ * Piece_Unity_Service_Rendering_Smarty: Piece_Unity_Service_Rendering_Smarty allows you to use Smarty in actions and plug-ins.</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="docs">
@@ -45,6 +46,13 @@ What&apos;s New in Piece_Unity_Component_Smarty 1.2.0
        </file>
       </dir> <!-- /Piece/Unity/Plugin/Renderer -->
      </dir> <!-- /Piece/Unity/Plugin -->
+     <dir name="Service">
+      <dir name="Rendering">
+       <file name="Smarty.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /Piece/Unity/Service/Rendering -->
+     </dir> <!-- /Piece/Unity/Service -->
     </dir> <!-- /Piece/Unity -->
    </dir> <!-- /Piece -->
    <dir name="tests">
@@ -127,6 +135,24 @@ What&apos;s New in Piece_Unity_Component_Smarty 1.2.0
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.2.0</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2008-09-04</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>A new release of Piece_Unity_Component_Smarty is now available.
+
+What&apos;s New in Piece_Unity_Component_Smarty 1.2.0
+
+ * Piece_Unity 1.5.0 support: Piece_Unity_Component_Smarty 1.2.0 does work properly with Piece_Unity 1.5.0.
+ * Piece_Unity_Service_Rendering_Smarty: Piece_Unity_Service_Rendering_Smarty allows you to use Smarty in actions and plug-ins.</notes>
+  </release>
   <release>
    <version>
     <release>1.1.0</release>
