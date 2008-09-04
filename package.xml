@@ -14,7 +14,7 @@
   <active>yes</active>
  </lead>
  <date>2008-09-04</date>
- <time>11:46:33</time>
+ <time>11:48:37</time>
  <version>
   <release>1.2.0</release>
   <api>1.2.0</api>
@@ -28,7 +28,7 @@
 
 What&apos;s New in Piece_Unity_Component_Smarty 1.2.0
 
- * Piece_Unity 1.5.0 support: Piece_Unity_Component_Smarty 1.2.0 work properly with Piece_Unity 1.5.0.
+ * Piece_Unity 1.5.0 support: Piece_Unity_Component_Smarty 1.2.0 works properly with Piece_Unity 1.5.0.
  * Piece_Unity_Service_Rendering_Smarty: Piece_Unity_Service_Rendering_Smarty allows you to use Smarty in actions and plug-ins.</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -116,6 +116,9 @@ What&apos;s New in Piece_Unity_Component_Smarty 1.2.0
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
    </dir> <!-- /tests -->
+   <file name="Piece_Unity_Component_Smarty-1.2.0.tgz" role="data">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -150,7 +153,7 @@ What&apos;s New in Piece_Unity_Component_Smarty 1.2.0
 
 What&apos;s New in Piece_Unity_Component_Smarty 1.2.0
 
- * Piece_Unity 1.5.0 support: Piece_Unity_Component_Smarty 1.2.0 work properly with Piece_Unity 1.5.0.
+ * Piece_Unity 1.5.0 support: Piece_Unity_Component_Smarty 1.2.0 works properly with Piece_Unity 1.5.0.
  * Piece_Unity_Service_Rendering_Smarty: Piece_Unity_Service_Rendering_Smarty allows you to use Smarty in actions and plug-ins.</notes>
   </release>
   <release>

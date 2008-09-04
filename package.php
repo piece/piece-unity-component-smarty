@@ -49,7 +49,7 @@ $notes = 'A new release of Piece_Unity_Component_Smarty is now available.
 
 What\'s New in Piece_Unity_Component_Smarty 1.2.0
 
- * Piece_Unity 1.5.0 support: Piece_Unity_Component_Smarty 1.2.0 work properly with Piece_Unity 1.5.0.
+ * Piece_Unity 1.5.0 support: Piece_Unity_Component_Smarty 1.2.0 works properly with Piece_Unity 1.5.0.
  * Piece_Unity_Service_Rendering_Smarty: Piece_Unity_Service_Rendering_Smarty allows you to use Smarty in actions and plug-ins.';
 
 $package = new PEAR_PackageFileManager2();
