@@ -34,7 +34,7 @@
  * @copyright  2006-2008 KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2007 Chihiro Sakatoku <csakatoku@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
- * @version    SVN: $Id$
+ * @version    GIT: $Id$
  * @since      File available since Release 1.0.0
  */
 

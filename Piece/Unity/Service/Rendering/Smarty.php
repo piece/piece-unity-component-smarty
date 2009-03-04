@@ -32,7 +32,7 @@
  * @subpackage Piece_Unity_Component_Smarty
  * @copyright  2008 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
- * @version    SVN: $Id$
+ * @version    GIT: $Id$
  * @link       http://smarty.php.net/
  * @since      File available since Release 1.2.0
  */
